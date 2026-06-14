@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
 
 const stats = [
   { target: 24, label: 'Courses in the library', suffix: '' },
@@ -9,8 +11,47 @@ const stats = [
   { target: 96, label: 'Hours of careful teaching', suffix: 'h' }
 ];
 
+// Stat Card Component with Framer Motion
+const StatCard = ({ stat, index, styles, themeStyles }: any) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5, margin: "-50px" });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (isInView) {
+      const duration = 1400;
+      const start = performance.now();
+      const target = stat.target;
+      
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        setCount(Math.floor(target * eased));
+        if (t < 1) requestAnimationFrame(tick);
+        else setCount(target);
+      };
+      requestAnimationFrame(tick);
+    }
+  }, [isInView, stat.target]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      style={styles.statItem}
+    >
+      <div style={styles.statNumber}>
+        {count}
+        <span style={styles.suffix}>{stat.suffix}</span>
+      </div>
+      <div style={styles.statLabel}>{stat.label}</div>
+    </motion.div>
+  );
+};
+
 export default function Stats() {
-  const countersRef = useRef<(HTMLSpanElement | null)[]>([]);
   const [isDark, setIsDark] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -39,82 +80,72 @@ export default function Stats() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Counter animation
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el = entry.target as HTMLElement;
-          const target = parseInt(el.dataset.target || '0', 10);
-          const duration = 1400;
-          const start = performance.now();
-          const tick = (now: number) => {
-            const t = Math.min(1, (now - start) / duration);
-            const eased = 1 - Math.pow(1 - t, 3);
-            el.textContent = Math.floor(target * eased).toString();
-            if (t < 1) requestAnimationFrame(tick);
-            else el.textContent = target.toString();
-          };
-          requestAnimationFrame(tick);
-          observer.unobserve(el);
-        }
-      });
-    }, { threshold: 0.6 });
-
-    countersRef.current.forEach(el => { if (el) observer.observe(el); });
-    return () => observer.disconnect();
-  }, []);
-
   // Theme based colors
   const themeStyles = {
     textPrimary: isDark ? '#ffffff' : '#171717',
     textSecondary: isDark ? '#999' : '#666',
     borderColor: isDark ? '#2a2a2a' : '#e5e5e5',
     accentColor: isDark ? '#e63939' : '#dc2626',
+    bg: isDark ? '#0a0a0a' : '#ffffff',
   };
 
   const styles = {
     container: { 
-      padding: isMobile ? '80px 24px' : '100px 40px', 
-      maxWidth: '1440px', 
-      margin: '0 auto', 
-      display: 'grid', 
-      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', 
-      gap: isMobile ? '32px' : '40px', 
-      borderTop: `1px solid ${themeStyles.borderColor}`,
+      padding: isMobile ? '60px 20px' : '80px 40px',
+      maxWidth: '1200px', 
+      margin: '0 auto',
+      background: themeStyles.bg,
+    },
+    statItem: {
+      textAlign: 'center' as const,
+      padding: isMobile ? '20px 0' : '24px 0',
     },
     statNumber: { 
-      fontSize: isMobile ? 'clamp(48px, 10vw, 80px)' : 'clamp(56px, 6vw, 96px)', 
-      lineHeight: 1, 
+      fontSize: isMobile ? 'clamp(40px, 10vw, 64px)' : 'clamp(56px, 6vw, 80px)', 
+      lineHeight: 1.1, 
       letterSpacing: '-0.04em', 
       fontWeight: 600, 
       color: themeStyles.textPrimary, 
-      marginBottom: '12px',
+      marginBottom: isMobile ? '8px' : '12px',
       fontVariantNumeric: 'tabular-nums' as const,
+      display: 'inline-block',
     },
     suffix: { 
-      color: themeStyles.accentColor 
+      color: themeStyles.accentColor,
+      marginLeft: '4px',
     },
     statLabel: { 
       fontFamily: 'monospace', 
-      fontSize: '10px', 
+      fontSize: isMobile ? '9px' : '10px', 
       letterSpacing: '0.16em', 
       textTransform: 'uppercase' as const, 
-      color: themeStyles.textSecondary 
+      color: themeStyles.textSecondary,
+      maxWidth: isMobile ? '140px' : '200px',
+      margin: '0 auto',
+      lineHeight: 1.4,
+    },
+    grid: {
+      display: 'grid',
+      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+      gap: isMobile ? '16px' : '32px',
+      borderTop: `1px solid ${themeStyles.borderColor}`,
+      paddingTop: isMobile ? '40px' : '60px',
     },
   };
 
   return (
     <div style={styles.container}>
-      {stats.map((stat, idx) => (
-        <div key={idx}>
-          <div style={styles.statNumber}>
-            <span ref={el => { countersRef.current[idx] = el; }} data-target={stat.target}>0</span>
-            <span style={styles.suffix}>{stat.suffix}</span>
-          </div>
-          <div style={styles.statLabel}>{stat.label}</div>
-        </div>
-      ))}
+      <div style={styles.grid}>
+        {stats.map((stat, idx) => (
+          <StatCard 
+            key={idx}
+            stat={stat}
+            index={idx}
+            styles={styles}
+            themeStyles={themeStyles}
+          />
+        ))}
+      </div>
     </div>
   );
 }

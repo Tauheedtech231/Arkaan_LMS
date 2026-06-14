@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 
 const courses = [
   { 
@@ -39,12 +42,73 @@ const courses = [
     author: 'Marc Lévi · 5 lessons · 2 hrs',
     image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=500&fit=crop",
     alt: "Open book reading"
+  },
+  { 
+    color: '#3b82f6', 
+    badge: 'Coming soon', 
+    num: 'Course 15 · Philosophy', 
+    name: 'The art of questioning', 
+    author: 'Sofia Khan · 10 lessons · 5 hrs',
+    image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=400&h=500&fit=crop",
+    alt: "Philosophy thinking"
+  },
+  { 
+    color: '#f59e0b', 
+    badge: 'New', 
+    num: 'Course 08 · Linguistics', 
+    name: 'The poetry of grammar', 
+    author: 'Elena Petrova · 7 lessons · 3.5 hrs',
+    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=500&fit=crop",
+    alt: "Language and words"
   }
 ];
+
+// Card Component with Framer Motion
+const CourseCard = ({ course, index, isDark, themeStyles, styles }: any) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2, margin: "-50px" });
+
+  return (
+    <motion.article
+      ref={ref}
+      className="stagger-item"
+      style={styles.card}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{
+        duration: 0.6,
+        delay: index * 0.1,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+    >
+      <div style={{...styles.cover, background: `linear-gradient(180deg, rgba(0,0,0,0.3) 0%, ${course.color} 100%)`}}>
+        <span style={styles.badge}>
+          {course.badge}
+        </span>
+        <div style={styles.overlay} />
+        <motion.img 
+          src={course.image} 
+          alt={course.alt}
+          style={styles.image}
+          className="course-image"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.4 }}
+        />
+      </div>
+      <div style={styles.meta}>
+        <div style={styles.num}>{course.num}</div>
+        <div style={styles.name}>{course.name}</div>
+        <div style={styles.author}>{course.author}</div>
+      </div>
+    </motion.article>
+  );
+};
 
 export default function FeaturedCourses() {
   const [isDark, setIsDark] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
 
   // Check system theme
   useEffect(() => {
@@ -61,35 +125,24 @@ export default function FeaturedCourses() {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // Check mobile
+  // Check screen size
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 960);
+    const checkScreen = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 768);
+      setIsTablet(width > 768 && width <= 1024);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
   }, []);
 
-  // Intersection Observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    document.querySelectorAll('.stagger-item').forEach(el => {
-      observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  // Get grid columns based on screen size
+  const getGridColumns = () => {
+    if (isMobile) return '1fr';
+    if (isTablet) return 'repeat(2, 1fr)';
+    return 'repeat(3, 1fr)';
+  };
 
   // Theme based colors
   const themeStyles = {
@@ -103,18 +156,19 @@ export default function FeaturedCourses() {
 
   const styles = {
     section: { 
-      padding: isMobile ? '120px 24px' : '160px 40px', 
-      maxWidth: '1440px', 
+      padding: isMobile ? '40px 20px' : '60px 40px', // ✅ Height aur kam
+      maxWidth: '1280px', 
       margin: '0 auto',
       background: themeStyles.sectionBg,
     },
     head: { 
-      display: 'flex', 
-      justifyContent: 'space-between', 
-      alignItems: 'flex-end', 
-      marginBottom: isMobile ? '40px' : '56px', 
-      gap: isMobile ? '32px' : '48px', 
-      flexWrap: 'wrap' as const 
+      display: 'flex',
+      flexDirection: 'column' as const, // ✅ Column for centering
+      justifyContent: 'center',
+      alignItems: 'center', // ✅ Center horizontally
+      textAlign: 'center' as const, // ✅ Center text
+      marginBottom: isMobile ? '32px' : '40px', // ✅ Kam margin
+      gap: isMobile ? '20px' : '24px',
     },
     eyebrow: { 
       fontFamily: 'monospace', 
@@ -124,8 +178,9 @@ export default function FeaturedCourses() {
       color: themeStyles.textSecondary, 
       display: 'flex', 
       alignItems: 'center', 
+      justifyContent: 'center', // ✅ Center
       gap: '10px', 
-      marginBottom: '24px' 
+      marginBottom: '0px' 
     },
     eyebrowLine: { 
       width: '24px', 
@@ -137,7 +192,7 @@ export default function FeaturedCourses() {
       lineHeight: 1.05, 
       letterSpacing: '-0.025em', 
       fontWeight: 600, 
-      maxWidth: '18ch', 
+      maxWidth: '100%', 
       margin: 0, 
       color: themeStyles.textPrimary 
     },
@@ -145,12 +200,15 @@ export default function FeaturedCourses() {
       fontStyle: 'italic', 
       fontWeight: 400 
     },
+    btnWrapper: {
+      marginTop: '0px',
+    },
     btnOutline: { 
       background: 'transparent', 
-      padding: isMobile ? '8px 16px' : '8px 16px', 
+      padding: isMobile ? '8px 20px' : '10px 24px', 
       borderRadius: '9999px', 
       fontWeight: 500, 
-      fontSize: '12px', 
+      fontSize: '13px', 
       border: `1px solid ${themeStyles.borderColor}`, 
       textDecoration: 'none', 
       color: themeStyles.textPrimary, 
@@ -161,14 +219,17 @@ export default function FeaturedCourses() {
     },
     grid: { 
       display: 'grid', 
-      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', 
-      gap: isMobile ? '16px' : '20px' 
+      gridTemplateColumns: getGridColumns(),
+      gap: isMobile ? '16px' : '20px',
+      // ✅ Mobile ke liye left-right margin
+      paddingLeft: isMobile ? '0px' : '0',
+      paddingRight: isMobile ? '0px' : '0',
     },
     card: {
       cursor: 'pointer',
       transition: 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
       background: themeStyles.cardBg,
-      borderRadius: '16px',
+      borderRadius: '14px', // ✅ Kam radius
       overflow: 'hidden',
     },
     cover: {
@@ -181,14 +242,14 @@ export default function FeaturedCourses() {
     },
     badge: {
       position: 'absolute' as const,
-      top: '14px',
-      left: '14px',
-      padding: '5px 9px',
-      background: 'rgba(0,0,0,0.6)',
+      top: '10px',
+      left: '10px',
+      padding: '3px 8px',
+      background: 'rgba(0,0,0,0.7)',
       backdropFilter: 'blur(8px)',
       color: '#fff',
       borderRadius: '999px',
-      fontSize: '10px',
+      fontSize: '8px', // ✅ Chota
       fontWeight: 600,
       letterSpacing: '0.08em',
       textTransform: 'uppercase' as const,
@@ -197,7 +258,7 @@ export default function FeaturedCourses() {
     overlay: {
       position: 'absolute' as const,
       inset: 0,
-      background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.2) 0 1px, transparent 1px 6px)',
+      background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0 1px, transparent 1px 6px)',
       mixBlendMode: 'overlay' as const,
       pointerEvents: 'none' as const,
     },
@@ -205,104 +266,89 @@ export default function FeaturedCourses() {
       width: '100%',
       height: '100%',
       objectFit: 'cover' as const,
-      transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      display: 'block',
     },
     meta: {
-      padding: '20px 16px 20px 16px',
+      padding: '10px 12px 12px 12px', // ✅ Aur kam padding
     },
     num: {
       fontFamily: 'monospace',
-      fontSize: '10px',
+      fontSize: '8px', // ✅ Chota
       letterSpacing: '0.16em',
       textTransform: 'uppercase' as const,
       color: themeStyles.textSecondary,
-      marginBottom: '8px',
+      marginBottom: '4px',
     },
     name: {
-      fontSize: isMobile ? '16px' : '19px',
-      lineHeight: isMobile ? '22px' : '24px',
+      fontSize: isMobile ? '15px' : '16px', // ✅ Chota
+      lineHeight: isMobile ? '20px' : '22px',
       color: themeStyles.textPrimary,
       fontWeight: 600,
       letterSpacing: '-0.005em',
-      marginBottom: '6px',
+      marginBottom: '3px',
     },
     author: {
-      fontSize: '13px',
+      fontSize: '10px', // ✅ Chota
       color: themeStyles.textSecondary,
     },
   };
 
   return (
-    <section style={styles.section} id="library">
+    <motion.section 
+      style={styles.section} 
+      id="library"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <div style={styles.head}>
         <div>
           <div style={styles.eyebrow}>
             <span style={styles.eyebrowLine} />
             Featured this season
+            <span style={styles.eyebrowLine} />
           </div>
           <h2 style={styles.title}>
             What&#39;s on <em style={styles.titleEm}>now.</em>
           </h2>
         </div>
-        <div>
-          <Link href="/dashboard" style={styles.btnOutline}>
-            See all 24 courses →
-          </Link>
+        <div style={styles.btnWrapper}>
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Link href="/dashboard" style={styles.btnOutline}>
+              See all 24 courses →
+            </Link>
+          </motion.div>
         </div>
       </div>
 
       <div style={styles.grid}>
         {courses.map((course, idx) => (
-          <article 
-            key={idx} 
-            className="stagger-item" 
-            style={styles.card}
-          >
-            <div style={{...styles.cover, background: `linear-gradient(180deg, rgba(0,0,0,0.4) 0%, ${course.color} 100%)`}}>
-              <span style={styles.badge}>
-                {course.badge}
-              </span>
-              <div style={styles.overlay} />
-              <img 
-                src={course.image} 
-                alt={course.alt}
-                style={styles.image}
-                className="course-image"
-              />
-            </div>
-            <div style={styles.meta}>
-              <div style={styles.num}>{course.num}</div>
-              <div style={styles.name}>{course.name}</div>
-              <div style={styles.author}>{course.author}</div>
-            </div>
-          </article>
+          <CourseCard 
+            key={idx}
+            course={course}
+            index={idx}
+            isDark={isDark}
+            themeStyles={themeStyles}
+            styles={styles}
+          />
         ))}
       </div>
 
       <style>{`
-        .stagger-item {
-          opacity: 0;
-          transform: translateY(28px);
-          transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .stagger-item.in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .stagger-item.in:nth-child(1) { transition-delay: 0.05s; }
-        .stagger-item.in:nth-child(2) { transition-delay: 0.15s; }
-        .stagger-item.in:nth-child(3) { transition-delay: 0.25s; }
-        .stagger-item.in:nth-child(4) { transition-delay: 0.35s; }
-        .stagger-item:hover {
-          transform: translateY(-6px);
-        }
-        .stagger-item:hover .course-image {
-          transform: scale(1.08);
-        }
         .btn-outline:hover {
           background: ${isDark ? '#1a1a1a' : '#eeeeee'};
+          transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+          .btn-outline:active {
+            transform: scale(0.98);
+          }
         }
       `}</style>
-    </section>
+    </motion.section>
   );
 }

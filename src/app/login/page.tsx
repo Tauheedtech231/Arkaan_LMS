@@ -1,15 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function LoginAndResetFlow() {
   const router = useRouter();
   const [isDark, setIsDark] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [page, setPage] = useState('login'); // login, reset, check-inbox
+  const [page, setPage] = useState('login');
   const [selectedMethod, setSelectedMethod] = useState('email');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -101,44 +103,44 @@ export default function LoginAndResetFlow() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: isMobile ? '80px 20px' : '100px 40px',
+      padding: isMobile ? '16px 16px' : '20px 32px',
     },
     card: {
-      maxWidth: '480px',
+      maxWidth: isMobile ? '360px' : '400px',
       width: '100%',
       background: themeStyles.cardBg,
-      borderRadius: '24px',
-      padding: isMobile ? '32px 20px' : '40px 32px',
+      borderRadius: isMobile ? '20px' : '24px',
+      padding: isMobile ? '20px 16px' : '24px 24px',
       border: `1px solid ${themeStyles.borderColor}`,
     },
     title: {
-      fontSize: isMobile ? '28px' : '32px',
+      fontSize: isMobile ? '22px' : '26px',
       lineHeight: 1.2,
       letterSpacing: '-0.02em',
       fontWeight: 600,
       color: themeStyles.textPrimary,
-      marginBottom: '8px',
+      marginBottom: '6px',
     },
     description: {
-      fontSize: '14px',
-      lineHeight: '22px',
+      fontSize: isMobile ? '11px' : '12px',
+      lineHeight: isMobile ? '16px' : '18px',
       color: themeStyles.textSecondary,
-      marginBottom: '32px',
+      marginBottom: isMobile ? '16px' : '20px',
     },
     toggleGroup: {
       display: 'flex',
-      gap: '12px',
-      marginBottom: '24px',
+      gap: '6px',
+      marginBottom: isMobile ? '14px' : '16px',
       background: themeStyles.inputBg,
-      padding: '4px',
-      borderRadius: '12px',
+      padding: '3px',
+      borderRadius: '10px',
       border: `1px solid ${themeStyles.borderColor}`,
     },
     toggleBtn: {
       flex: 1,
-      padding: '10px 16px',
-      borderRadius: '10px',
-      fontSize: '14px',
+      padding: isMobile ? '6px 10px' : '8px 14px',
+      borderRadius: '8px',
+      fontSize: isMobile ? '11px' : '12px',
       fontWeight: 500,
       textAlign: 'center' as const,
       cursor: 'pointer',
@@ -152,30 +154,30 @@ export default function LoginAndResetFlow() {
     },
     input: {
       width: '100%',
-      padding: '14px 16px',
-      fontSize: '15px',
+      padding: isMobile ? '8px 12px' : '10px 14px',
+      fontSize: isMobile ? '12px' : '13px',
       background: themeStyles.inputBg,
       border: `1px solid ${themeStyles.inputBorder}`,
-      borderRadius: '12px',
+      borderRadius: '10px',
       color: themeStyles.textPrimary,
       outline: 'none',
-      marginBottom: '20px',
+      marginBottom: isMobile ? '12px' : '14px',
     },
     infoText: {
-      fontSize: '13px',
+      fontSize: isMobile ? '10px' : '11px',
       color: themeStyles.textSecondary,
-      marginBottom: '20px',
+      marginBottom: isMobile ? '12px' : '14px',
     },
     checkboxGroup: {
       display: 'flex',
       alignItems: 'center',
-      gap: '12px',
-      marginBottom: '32px',
+      gap: '8px',
+      marginBottom: isMobile ? '16px' : '20px',
       cursor: 'pointer',
     },
     checkbox: {
-      width: '18px',
-      height: '18px',
+      width: '14px',
+      height: '14px',
       cursor: 'pointer',
       accentColor: themeStyles.accentColor,
     },
@@ -183,38 +185,38 @@ export default function LoginAndResetFlow() {
       width: '100%',
       background: themeStyles.accentColor,
       color: '#fff',
-      padding: '14px 20px',
+      padding: isMobile ? '8px 14px' : '10px 18px',
       borderRadius: '999px',
       fontWeight: 600,
-      fontSize: '14px',
+      fontSize: isMobile ? '12px' : '13px',
       textAlign: 'center' as const,
       cursor: 'pointer',
       border: 'none',
-      marginBottom: '20px',
+      marginBottom: isMobile ? '12px' : '14px',
     },
     btnSecondary: {
       width: '100%',
       background: 'transparent',
       color: themeStyles.textSecondary,
-      padding: '14px 20px',
+      padding: isMobile ? '8px 14px' : '10px 18px',
       borderRadius: '999px',
       fontWeight: 500,
-      fontSize: '14px',
+      fontSize: isMobile ? '12px' : '13px',
       textAlign: 'center' as const,
       cursor: 'pointer',
       border: `1px solid ${themeStyles.borderColor}`,
-      marginBottom: '20px',
+      marginBottom: isMobile ? '12px' : '14px',
     },
     linkRow: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      gap: '8px',
-      marginBottom: '32px',
+      gap: '6px',
+      marginBottom: isMobile ? '20px' : '24px',
       flexWrap: 'wrap' as const,
     },
     linkText: {
-      fontSize: '14px',
+      fontSize: isMobile ? '11px' : '12px',
       color: themeStyles.textSecondary,
     },
     link: {
@@ -226,8 +228,8 @@ export default function LoginAndResetFlow() {
     divider: {
       display: 'flex',
       alignItems: 'center',
-      gap: '16px',
-      marginBottom: '24px',
+      gap: '10px',
+      marginBottom: isMobile ? '16px' : '20px',
     },
     dividerLine: {
       flex: 1,
@@ -235,21 +237,21 @@ export default function LoginAndResetFlow() {
       background: themeStyles.borderColor,
     },
     dividerText: {
-      fontSize: '12px',
+      fontSize: isMobile ? '9px' : '10px',
       color: themeStyles.textSecondary,
     },
     socialButtons: {
       display: 'flex',
-      gap: '16px',
+      gap: '10px',
       justifyContent: 'center',
     },
     socialBtn: {
       flex: 1,
-      padding: '12px',
+      padding: isMobile ? '8px' : '10px',
       background: themeStyles.inputBg,
       border: `1px solid ${themeStyles.borderColor}`,
-      borderRadius: '12px',
-      fontSize: '14px',
+      borderRadius: '10px',
+      fontSize: isMobile ? '11px' : '12px',
       fontWeight: 500,
       textAlign: 'center' as const,
       color: themeStyles.textPrimary,
@@ -258,47 +260,66 @@ export default function LoginAndResetFlow() {
     },
     inboxIcon: {
       textAlign: 'center' as const,
-      fontSize: '48px',
-      marginBottom: '20px',
+      fontSize: isMobile ? '36px' : '42px',
+      marginBottom: isMobile ? '12px' : '16px',
     },
     actionRow: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      gap: '16px',
+      gap: '12px',
       flexWrap: 'wrap' as const,
-      marginTop: '20px',
+      marginTop: isMobile ? '12px' : '16px',
     },
+  };
+
+  // Animation variants
+  const pageVariants = {
+    initial: { opacity: 0, x: 20 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -20 }
+  };
+
+  const pageTransition: any = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.3
   };
 
   return (
     <div style={styles.container}>
       <main style={styles.main}>
         <div style={styles.card}>
-          
-          {/* PAGE 1: LOGIN */}
-          {page === 'login' && (
-            <>
-              <h1 style={styles.title}>Welcome back.</h1>
-              <p style={styles.description}>Sign in to pick up where you left off.</p>
+          <AnimatePresence mode="wait">
+            {/* PAGE 1: LOGIN */}
+            {page === 'login' && (
+              <motion.div
+                key="login"
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageVariants}
+                transition={pageTransition}
+              >
+                <h1 style={styles.title}>Welcome back.</h1>
+                <p style={styles.description}>Sign in to pick up where you left off.</p>
 
-              <div style={styles.toggleGroup}>
-                <button 
-                  style={{...styles.toggleBtn, ...(selectedMethod === 'phone' && styles.toggleBtnActive)}} 
-                  onClick={() => setSelectedMethod('phone')}
-                >
-                  Phone
-                </button>
-                <button 
-                  style={{...styles.toggleBtn, ...(selectedMethod === 'email' && styles.toggleBtnActive)}} 
-                  onClick={() => setSelectedMethod('email')}
-                >
-                  Email
-                </button>
-              </div>
+                <div style={styles.toggleGroup}>
+                  <button 
+                    style={{...styles.toggleBtn, ...(selectedMethod === 'phone' && styles.toggleBtnActive)}} 
+                    onClick={() => setSelectedMethod('phone')}
+                  >
+                    Phone
+                  </button>
+                  <button 
+                    style={{...styles.toggleBtn, ...(selectedMethod === 'email' && styles.toggleBtnActive)}} 
+                    onClick={() => setSelectedMethod('email')}
+                  >
+                    Email
+                  </button>
+                </div>
 
-              {selectedMethod === 'email' && (
-                <>
+                {selectedMethod === 'email' && (
                   <input 
                     type="email" 
                     placeholder="you@example.com" 
@@ -306,12 +327,9 @@ export default function LoginAndResetFlow() {
                     onChange={(e) => setEmail(e.target.value)} 
                     style={styles.input} 
                   />
-                  <p style={styles.infoText}>We'll send a 6-digit code to verify.</p>
-                </>
-              )}
+                )}
 
-              {selectedMethod === 'phone' && (
-                <>
+                {selectedMethod === 'phone' && (
                   <input 
                     type="tel" 
                     placeholder="+1 (555) 000-0000" 
@@ -319,87 +337,99 @@ export default function LoginAndResetFlow() {
                     onChange={(e) => setPhone(e.target.value)} 
                     style={styles.input} 
                   />
-                  <p style={styles.infoText}>We'll send a 6-digit code to verify.</p>
-                </>
-              )}
-
-              <input 
-                type="password" 
-                placeholder="Choose a password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                style={styles.input} 
-              />
-
-              <div style={styles.checkboxGroup} onClick={() => setKeepSignedIn(!keepSignedIn)}>
-                <input type="checkbox" checked={keepSignedIn} onChange={() => setKeepSignedIn(!keepSignedIn)} style={styles.checkbox} />
-                <span style={{ fontSize: '14px', color: themeStyles.textSecondary }}>Keep me signed in</span>
-              </div>
-
-              <button onClick={handleLogin} style={styles.btnPrimary}>Sign in</button>
-
-              <div style={styles.linkRow}>
-                <span style={styles.linkText}>New here?</span>
-                <Link href="/signup" style={styles.link}>Create an account</Link>
-              </div>
-
-              <div style={styles.divider}>
-                <span style={styles.dividerLine} />
-                <span style={styles.dividerText}>OR LOGIN THROUGH</span>
-                <span style={styles.dividerLine} />
-              </div>
-
-              <div style={styles.socialButtons}>
-                <Link href="#" style={styles.socialBtn}>Google</Link>
-                <Link href="#" style={styles.socialBtn}>Apple</Link>
-              </div>
-
-              <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                <span onClick={() => setPage('reset')} style={styles.link}>Forgot password?</span>
-              </div>
-            </>
-          )}
-
-          {/* PAGE 2: RESET PASSWORD */}
-          {page === 'reset' && (
-            <>
-              <h1 style={styles.title}>Reset your password.</h1>
-              <p style={styles.description}>Type the email or phone you signed up with. We'll send a one-time code.</p>
-
-              <input 
-                type="text" 
-                placeholder="Email or phone" 
-                value={resetContact} 
-                onChange={(e) => setResetContact(e.target.value)} 
-                style={styles.input} 
-              />
-
-              <button onClick={handleSendResetCode} style={styles.btnPrimary}>Send reset code</button>
-
-              <div style={styles.linkRow}>
-                <span onClick={() => setPage('login')} style={styles.link}>Back to login</span>
-              </div>
-            </>
-          )}
-
-          {/* PAGE 3: CHECK INBOX */}
-          {page === 'check-inbox' && (
-            <>
-              <div style={styles.inboxIcon}>📧</div>
-              <h1 style={styles.title}>Check your inbox.</h1>
-              <p style={styles.description}>We sent a reset code to {resetContact}. The code expires in 10 minutes.</p>
-
-              <div style={styles.actionRow}>
-                <span onClick={() => setPage('login')} style={styles.link}>Back to login</span>
-                {canResend ? (
-                  <span onClick={handleResend} style={styles.link}>Resend code</span>
-                ) : (
-                  <span style={{ fontSize: '13px', color: themeStyles.textSecondary }}>Resend code in {resendTimer}s</span>
                 )}
-              </div>
-            </>
-          )}
 
+                <input 
+                  type="password" 
+                  placeholder="Password" 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                  style={styles.input} 
+                />
+
+                <div style={styles.checkboxGroup} onClick={() => setKeepSignedIn(!keepSignedIn)}>
+                  <input type="checkbox" checked={keepSignedIn} onChange={() => setKeepSignedIn(!keepSignedIn)} style={styles.checkbox} />
+                  <span style={{ fontSize: isMobile ? '11px' : '12px', color: themeStyles.textSecondary }}>Keep me signed in</span>
+                </div>
+
+                <button onClick={handleLogin} style={styles.btnPrimary}>Sign in</button>
+
+                <div style={styles.linkRow}>
+                  <span style={styles.linkText}>New here?</span>
+                  <Link href="/signup" style={styles.link}>Create an account</Link>
+                </div>
+
+                <div style={styles.divider}>
+                  <span style={styles.dividerLine} />
+                  <span style={styles.dividerText}>OR LOGIN THROUGH</span>
+                  <span style={styles.dividerLine} />
+                </div>
+
+                <div style={styles.socialButtons}>
+                  <Link href="#" style={styles.socialBtn}>Google</Link>
+                  <Link href="#" style={styles.socialBtn}>Apple</Link>
+                </div>
+
+                <div style={{ textAlign: 'center', marginTop: isMobile ? '12px' : '16px' }}>
+                  <span onClick={() => setPage('reset')} style={styles.link}>Forgot password?</span>
+                </div>
+              </motion.div>
+            )}
+
+            {/* PAGE 2: RESET PASSWORD */}
+            {page === 'reset' && (
+              <motion.div
+                key="reset"
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageVariants}
+                transition={pageTransition}
+              >
+                <h1 style={styles.title}>Reset your password.</h1>
+                <p style={styles.description}>Type the email or phone you signed up with.</p>
+
+                <input 
+                  type="text" 
+                  placeholder="Email or phone" 
+                  value={resetContact} 
+                  onChange={(e) => setResetContact(e.target.value)} 
+                  style={styles.input} 
+                />
+
+                <button onClick={handleSendResetCode} style={styles.btnPrimary}>Send reset code</button>
+
+                <div style={styles.linkRow}>
+                  <span onClick={() => setPage('login')} style={styles.link}>Back to login</span>
+                </div>
+              </motion.div>
+            )}
+
+            {/* PAGE 3: CHECK INBOX */}
+            {page === 'check-inbox' && (
+              <motion.div
+                key="inbox"
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageVariants}
+                transition={pageTransition}
+              >
+                <div style={styles.inboxIcon}>📧</div>
+                <h1 style={styles.title}>Check your inbox.</h1>
+                <p style={styles.description}>We sent a reset code to {resetContact}.</p>
+
+                <div style={styles.actionRow}>
+                  <span onClick={() => setPage('login')} style={styles.link}>Back to login</span>
+                  {canResend ? (
+                    <span onClick={handleResend} style={styles.link}>Resend code</span>
+                  ) : (
+                    <span style={{ fontSize: isMobile ? '10px' : '11px', color: themeStyles.textSecondary }}>Resend in {resendTimer}s</span>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
     </div>

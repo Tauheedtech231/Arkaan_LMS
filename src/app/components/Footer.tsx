@@ -25,7 +25,7 @@ export default function Footer() {
   // Check mobile
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 960);
+      setIsMobile(window.innerWidth <= 768);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -36,26 +36,27 @@ export default function Footer() {
   const themeStyles = {
     textPrimary: isDark ? '#ffffff' : '#171717',
     textSecondary: isDark ? '#999' : '#666',
-    borderColor: isDark ? '#1f1f1f' : '#e5e5e5',
+    borderColor: isDark ? '#2a2a2a' : '#e5e5e5',
     accentColor: isDark ? '#e63939' : '#dc2626',
     linkHover: isDark ? '#ffffff' : '#171717',
     brandColor: isDark ? '#ffffff' : '#171717',
+    bg: isDark ? '#0a0a0a' : '#ffffff',
   };
 
   const styles = {
     footer: { 
-      padding: isMobile ? '64px 24px 32px' : '80px 40px 32px', 
+      padding: isMobile ? '32px 16px 20px' : '48px 40px 24px', 
       borderTop: `1px solid ${themeStyles.borderColor}`,
-      background: isDark ? '#0a0a0a' : '#ffffff',
+      background: themeStyles.bg,
     },
     ornament: { 
       overflow: 'hidden', 
-      margin: '0 0 24px', 
+      margin: '0 0 16px', 
       textAlign: 'center' as const 
     },
     ornamentWord: { 
       fontFamily: 'Georgia, serif', 
-      fontSize: isMobile ? 'clamp(80px, 15vw, 200px)' : 'clamp(100px, 18vw, 280px)', 
+      fontSize: isMobile ? 'clamp(32px, 8vw, 56px)' : 'clamp(56px, 10vw, 120px)', 
       lineHeight: 0.9, 
       letterSpacing: '-0.045em', 
       fontWeight: 700, 
@@ -69,34 +70,34 @@ export default function Footer() {
     },
     grid: { 
       display: 'grid', 
-      gridTemplateColumns: isMobile ? '1fr' : '1.4fr 1fr 1fr 1fr', 
-      gap: isMobile ? '40px' : '48px', 
-      marginBottom: isMobile ? '64px' : '80px', 
-      maxWidth: '1440px', 
+      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : '1.2fr 1fr 1fr 1fr', 
+      gap: isMobile ? '24px' : '32px', 
+      marginBottom: isMobile ? '32px' : '40px', 
+      maxWidth: '1200px', 
       marginLeft: 'auto', 
       marginRight: 'auto' 
     },
     brand: { 
-      fontSize: isMobile ? '24px' : '28px', 
+      fontSize: isMobile ? '16px' : '22px', 
       fontWeight: 'bold', 
       letterSpacing: '-0.02em', 
       color: themeStyles.brandColor, 
-      marginBottom: '16px' 
+      marginBottom: '8px' 
     },
     brandP: { 
-      fontSize: '13px', 
-      lineHeight: '20px',
+      fontSize: '11px', 
+      lineHeight: '16px',
       color: themeStyles.textSecondary, 
-      marginTop: '16px', 
-      maxWidth: '28ch' 
+      marginTop: '8px', 
+      maxWidth: isMobile ? '100%' : '24ch' 
     },
     colH5: { 
       fontFamily: 'monospace', 
-      fontSize: '10px', 
+      fontSize: '9px', 
       letterSpacing: '0.16em', 
       textTransform: 'uppercase' as const, 
       color: themeStyles.textSecondary, 
-      margin: '0 0 18px', 
+      margin: '0 0 12px', 
       fontWeight: 500 
     },
     colUl: { 
@@ -105,28 +106,29 @@ export default function Footer() {
       padding: 0, 
       display: 'flex', 
       flexDirection: 'column' as const, 
-      gap: '12px' 
+      gap: '8px' 
     },
     colLink: { 
-      fontSize: '14px', 
+      fontSize: '12px', 
       color: themeStyles.textSecondary, 
       textDecoration: 'none', 
-      transition: 'color 0.2s ease',
+      transition: 'all 0.2s ease',
       cursor: 'pointer',
+      display: 'inline-block',
     },
     bottom: { 
-      paddingTop: '32px', 
+      paddingTop: '16px', 
       borderTop: `1px solid ${themeStyles.borderColor}`, 
       display: 'flex', 
       flexDirection: isMobile ? ('column' as const) : ('row' as const),
       justifyContent: 'space-between', 
       alignItems: 'center', 
-      gap: isMobile ? '16px' : '0',
+      gap: isMobile ? '8px' : '0',
       fontFamily: 'monospace', 
-      fontSize: '10px', 
+      fontSize: '8px', 
       letterSpacing: '0.06em', 
       color: themeStyles.textSecondary, 
-      maxWidth: '1440px', 
+      maxWidth: '1200px', 
       margin: '0 auto',
       textAlign: 'center' as const,
     },
@@ -134,26 +136,33 @@ export default function Footer() {
 
   return (
     <footer style={styles.footer}>
+      {/* Logo Section */}
       <div style={styles.ornament}>
         <div style={styles.ornamentWord}>
           Ark<em style={styles.ornamentEm}>aan</em>
         </div>
       </div>
 
+      {/* Grid Links */}
       <div style={styles.grid}>
+        {/* Brand Column */}
         <div>
           <div style={styles.brand}>ARKAAN</div>
-          <p style={styles.brandP}>A small library of courses, taught with care. Founded 2024. Published from Lisbon and Brussels.</p>
+          <p style={styles.brandP}>A small library of courses, taught with care. Founded 2024.</p>
         </div>
+        
+        {/* Library Column */}
         <div>
           <h5 style={styles.colH5}>Library</h5>
           <ul style={styles.colUl}>
             <li><Link href="#" style={styles.colLink} className="footer-link">All courses</Link></li>
             <li><Link href="#" style={styles.colLink} className="footer-link">Spring 2026</Link></li>
-            <li><Link href="#" style={styles.colLink} className="footer-link">New &amp; returning</Link></li>
+            <li><Link href="#" style={styles.colLink} className="footer-link">New & returning</Link></li>
             <li><Link href="#" style={styles.colLink} className="footer-link">Gift a course</Link></li>
           </ul>
         </div>
+        
+        {/* Studio Column */}
         <div>
           <h5 style={styles.colH5}>Studio</h5>
           <ul style={styles.colUl}>
@@ -163,6 +172,8 @@ export default function Footer() {
             <li><Link href="#" style={styles.colLink} className="footer-link">Imprint</Link></li>
           </ul>
         </div>
+        
+        {/* Account Column */}
         <div>
           <h5 style={styles.colH5}>Account</h5>
           <ul style={styles.colUl}>
@@ -174,9 +185,10 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Bottom Section */}
       <div style={styles.bottom}>
-        <span>© Arkaan 2026 · All courses commissioned</span>
-        <span>Volume 04 · Spring 2026 · 24 May 2026</span>
+        <span>© Arkaan 2026</span>
+        <span>Volume 04 · Spring 2026</span>
       </div>
 
       <style>{`
@@ -185,7 +197,6 @@ export default function Footer() {
         }
         .footer-link:hover {
           color: ${themeStyles.linkHover};
-          opacity: 1;
           transform: translateX(2px);
         }
       `}</style>

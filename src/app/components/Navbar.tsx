@@ -29,6 +29,9 @@ export default function Navbar() {
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setMobileMenuOpen(false);
+      }
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -44,23 +47,28 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu when clicking outside
+  // Prevent body scroll when menu is open
   useEffect(() => {
-    if (!mobileMenuOpen) return;
-    const handleClickOutside = () => setMobileMenuOpen(false);
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [mobileMenuOpen]);
 
   // Theme based colors
   const themeStyles = {
     textPrimary: isDark ? '#ffffff' : '#171717',
     textSecondary: isDark ? '#e6e6e6' : '#4a4a4a',
-    bgScrolled: isDark ? 'rgba(10, 10, 10, 0.78)' : 'rgba(255, 255, 255, 0.78)',
+    bgScrolled: isDark ? 'rgba(10, 10, 10, 0.85)' : 'rgba(255, 255, 255, 0.85)',
     borderColor: isDark ? '#1f1f1f' : '#e5e5e5',
     btnPrimaryBg: isDark ? '#ffffff' : '#171717',
     btnPrimaryText: isDark ? '#0a0a0a' : '#ffffff',
     mobileMenuBg: isDark ? '#141414' : '#ffffff',
+    overlayBg: 'rgba(0, 0, 0, 0.6)',
   };
 
   const styles = {
@@ -70,7 +78,7 @@ export default function Navbar() {
       left: 0,
       right: 0,
       zIndex: 1000,
-      padding: isMobile ? '16px 20px' : '18px 40px',
+      padding: isMobile ? '14px 20px' : '18px 40px',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -81,19 +89,19 @@ export default function Navbar() {
       borderBottomColor: scrolled ? themeStyles.borderColor : 'transparent',
     },
     brand: {
-      fontSize: '20px',
+      fontSize: isMobile ? '20px' : '22px',
       fontWeight: 'bold',
       letterSpacing: '-0.02em',
       color: themeStyles.textPrimary,
       textDecoration: 'none',
-      zIndex: 1001,
+      zIndex: 1002,
     },
     desktopLinks: {
       display: isMobile ? 'none' : 'flex',
-      gap: '28px',
+      gap: '32px',
     },
     desktopLink: {
-      fontSize: '13px',
+      fontSize: '14px',
       fontWeight: 500,
       color: themeStyles.textSecondary,
       textDecoration: 'none',
@@ -103,7 +111,7 @@ export default function Navbar() {
       display: 'flex',
       alignItems: 'center',
       gap: '12px',
-      zIndex: 1001,
+      zIndex: 1002,
     },
     menuBtn: {
       display: isMobile ? 'flex' : 'none',
@@ -113,6 +121,12 @@ export default function Navbar() {
       padding: '8px',
       borderRadius: '8px',
       color: themeStyles.textPrimary,
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'opacity 0.2s ease',
+      opacity: mobileMenuOpen ? 0 : 1,
+      visibility: (mobileMenuOpen ? 'hidden' : 'visible') as 'visible' | 'hidden',
+      pointerEvents: (mobileMenuOpen ? 'none' : 'auto') as 'none' | 'auto',
     },
     btnGhost: {
       display: 'inline-flex',
@@ -120,7 +134,7 @@ export default function Navbar() {
       gap: '8px',
       fontWeight: 600,
       fontSize: '14px',
-      padding: '10px 16px',
+      padding: '8px 18px',
       border: '1px solid transparent',
       borderRadius: '9999px',
       background: 'transparent',
@@ -134,22 +148,22 @@ export default function Navbar() {
       gap: '8px',
       fontWeight: 600,
       fontSize: '14px',
-      padding: '10px 16px',
+      padding: '8px 18px',
       borderRadius: '9999px',
       background: themeStyles.btnPrimaryBg,
       color: themeStyles.btnPrimaryText,
       textDecoration: 'none',
       transition: 'all 0.3s ease',
     },
-    // Mobile Menu Overlay
     mobileOverlay: {
       position: 'fixed' as const,
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
-      background: 'rgba(0, 0, 0, 0.5)',
-      zIndex: 998,
+      background: themeStyles.overlayBg,
+      backdropFilter: 'blur(4px)',
+      zIndex: 1000,
       opacity: mobileMenuOpen ? 1 : 0,
       visibility: (mobileMenuOpen ? 'visible' : 'hidden') as 'visible' | 'hidden',
       transition: 'all 0.3s ease',
@@ -159,27 +173,32 @@ export default function Navbar() {
       top: 0,
       right: 0,
       bottom: 0,
-      width: '280px',
+      width: 'min(320px, 100vw)',
+      maxWidth: '320px',
       background: themeStyles.mobileMenuBg,
-      borderLeft: `1px solid ${themeStyles.borderColor}`,
-      zIndex: 999,
+      boxShadow: '-5px 0 25px rgba(0, 0, 0, 0.15)',
+      zIndex: 1001,
       transform: mobileMenuOpen ? 'translateX(0)' : 'translateX(100%)',
       transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      padding: '80px 24px 24px 24px',
+      padding: '70px 24px 30px 24px',
       display: 'flex',
       flexDirection: 'column' as const,
+      overflowY: 'auto' as const,
+      boxSizing: 'border-box' as const,
+      left: 'auto',
     },
     mobileLink: {
       display: 'block',
-      padding: '14px 0',
-      fontSize: '16px',
+      padding: '16px 0',
+      fontSize: '18px',
       fontWeight: 500,
       color: themeStyles.textPrimary,
       textDecoration: 'none',
       borderBottom: `1px solid ${themeStyles.borderColor}`,
+      transition: 'padding-left 0.2s ease',
     },
     mobileBtnGroup: {
-      marginTop: '24px',
+      marginTop: '32px',
       display: 'flex',
       flexDirection: 'column' as const,
       gap: '12px',
@@ -187,25 +206,27 @@ export default function Navbar() {
     mobileBtnGhost: {
       display: 'block',
       textAlign: 'center' as const,
-      padding: '12px 20px',
+      padding: '14px 20px',
       borderRadius: '40px',
       fontWeight: 600,
-      fontSize: '14px',
+      fontSize: '15px',
       background: 'transparent',
       color: themeStyles.textPrimary,
       border: `1px solid ${themeStyles.borderColor}`,
       textDecoration: 'none',
+      transition: 'all 0.2s ease',
     },
     mobileBtnPrimary: {
       display: 'block',
       textAlign: 'center' as const,
-      padding: '12px 20px',
+      padding: '14px 20px',
       borderRadius: '40px',
       fontWeight: 600,
-      fontSize: '14px',
+      fontSize: '15px',
       background: themeStyles.btnPrimaryBg,
       color: themeStyles.btnPrimaryText,
       textDecoration: 'none',
+      transition: 'all 0.2s ease',
     },
     closeBtn: {
       position: 'absolute' as const,
@@ -217,10 +238,29 @@ export default function Navbar() {
       padding: '8px',
       borderRadius: '8px',
       color: themeStyles.textPrimary,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1002,
+      opacity: mobileMenuOpen ? 1 : 0,
+      visibility: (mobileMenuOpen ? 'visible' : 'hidden') as 'visible' | 'hidden',
     },
   };
 
   const closeMenu = () => setMobileMenuOpen(false);
+  const openMenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMobileMenuOpen(true);
+  };
+
+  const desktopLinkHover = {
+    onMouseEnter: (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.currentTarget.style.color = themeStyles.textPrimary;
+    },
+    onMouseLeave: (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.currentTarget.style.color = themeStyles.textSecondary;
+    },
+  };
 
   return (
     <>
@@ -229,48 +269,124 @@ export default function Navbar() {
           ARKAAN
         </Link>
 
-        {/* Desktop Navigation */}
         <div style={styles.desktopLinks}>
-          <Link href="#library" style={styles.desktopLink}>Library</Link>
-          <Link href="#authors" style={styles.desktopLink}>Authors</Link>
-          <Link href="#manifesto" style={styles.desktopLink}>Why Arkaan</Link>
-          <Link href="#" style={styles.desktopLink}>Journal</Link>
+          <Link 
+            href="#library" 
+            style={styles.desktopLink}
+            {...desktopLinkHover}
+          >
+            Library
+          </Link>
+          <Link 
+            href="#authors" 
+            style={styles.desktopLink}
+            {...desktopLinkHover}
+          >
+            Authors
+          </Link>
+          <Link 
+            href="#manifesto" 
+            style={styles.desktopLink}
+            {...desktopLinkHover}
+          >
+            Why Arkaan
+          </Link>
+          <Link 
+            href="#" 
+            style={styles.desktopLink}
+            {...desktopLinkHover}
+          >
+            Journal
+          </Link>
         </div>
 
         <div style={styles.rightSection}>
-          <Link href="/welcome" style={styles.btnGhost}>Sign in</Link>
-          <Link href="/dashboard" style={styles.btnPrimary}>
-            Begin a course <span style={{ marginLeft: '4px' }}>→</span>
-          </Link>
-          <button 
-            style={styles.menuBtn} 
-            onClick={(e) => {
-              e.stopPropagation();
-              setMobileMenuOpen(!mobileMenuOpen);
-            }}
-          >
-            <Menu size={24} />
-          </button>
+          {!isMobile && (
+            <>
+              <Link href="/welcome" style={styles.btnGhost}>Sign in</Link>
+              <Link href="/dashboard" style={styles.btnPrimary}>
+                Begin a course <span style={{ marginLeft: '4px' }}>→</span>
+              </Link>
+            </>
+          )}
+          
+          {isMobile && (
+            <button 
+              style={styles.menuBtn} 
+              onClick={openMenu}
+              aria-label="Open menu"
+            >
+              <Menu size={24} />
+            </button>
+          )}
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <div style={styles.mobileOverlay} onClick={closeMenu} />
 
-      {/* Mobile Menu */}
       <div style={styles.mobileMenu}>
-        <button style={styles.closeBtn} onClick={closeMenu}>
+        <button 
+          style={styles.closeBtn} 
+          onClick={closeMenu} 
+          aria-label="Close menu"
+        >
           <X size={24} />
         </button>
         
-        <Link href="#library" style={styles.mobileLink} onClick={closeMenu}>Library</Link>
-        <Link href="#authors" style={styles.mobileLink} onClick={closeMenu}>Authors</Link>
-        <Link href="#manifesto" style={styles.mobileLink} onClick={closeMenu}>Why Arkaan</Link>
-        <Link href="#" style={styles.mobileLink} onClick={closeMenu}>Journal</Link>
+        <Link 
+          href="#library" 
+          style={styles.mobileLink} 
+          onClick={closeMenu}
+          onMouseEnter={(e) => e.currentTarget.style.paddingLeft = '8px'}
+          onMouseLeave={(e) => e.currentTarget.style.paddingLeft = '0px'}
+        >
+          Library
+        </Link>
+        <Link 
+          href="#authors" 
+          style={styles.mobileLink} 
+          onClick={closeMenu}
+          onMouseEnter={(e) => e.currentTarget.style.paddingLeft = '8px'}
+          onMouseLeave={(e) => e.currentTarget.style.paddingLeft = '0px'}
+        >
+          Authors
+        </Link>
+        <Link 
+          href="#manifesto" 
+          style={styles.mobileLink} 
+          onClick={closeMenu}
+          onMouseEnter={(e) => e.currentTarget.style.paddingLeft = '8px'}
+          onMouseLeave={(e) => e.currentTarget.style.paddingLeft = '0px'}
+        >
+          Why Arkaan
+        </Link>
+        <Link 
+          href="#" 
+          style={styles.mobileLink} 
+          onClick={closeMenu}
+          onMouseEnter={(e) => e.currentTarget.style.paddingLeft = '8px'}
+          onMouseLeave={(e) => e.currentTarget.style.paddingLeft = '0px'}
+        >
+          Journal
+        </Link>
         
         <div style={styles.mobileBtnGroup}>
-          <Link href="/welcome" style={styles.mobileBtnGhost} onClick={closeMenu}>Sign in</Link>
-          <Link href="/dashboard" style={styles.mobileBtnPrimary} onClick={closeMenu}>
+          <Link 
+            href="/welcome" 
+            style={styles.mobileBtnGhost} 
+            onClick={closeMenu}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            Sign in
+          </Link>
+          <Link 
+            href="/dashboard" 
+            style={styles.mobileBtnPrimary} 
+            onClick={closeMenu}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          >
             Begin a course →
           </Link>
         </div>
@@ -288,11 +404,40 @@ export default function Navbar() {
             transform: scale(1.02);
           }
         }
-        .mobile-link {
-          transition: all 0.2s ease;
+        
+        @media (max-width: 768px) {
+          button, a {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+          }
+          
+          button:active, a:active {
+            opacity: 0.7;
+            transform: scale(0.98);
+            transition: all 0.05s ease;
+          }
         }
-        .mobile-link:active {
-          opacity: 0.7;
+        
+        /* Mobile menu scrollbar styling */
+        div[style*="mobileMenu"] {
+          scrollbar-width: thin;
+        }
+        
+        div[style*="mobileMenu"]::-webkit-scrollbar {
+          width: 4px;
+        }
+        
+        div[style*="mobileMenu"]::-webkit-scrollbar-track {
+          background: ${themeStyles.borderColor};
+        }
+        
+        div[style*="mobileMenu"]::-webkit-scrollbar-thumb {
+          background: ${themeStyles.textSecondary};
+          border-radius: 4px;
+        }
+        
+        body.menu-open {
+          overflow: hidden;
         }
       `}</style>
     </>

@@ -65,10 +65,14 @@ export default function Hero() {
   const heroStyles = {
     header: {
       position: 'relative' as const,
-      minHeight: '100vh',
-      padding: isMobile ? '120px 24px 96px' : '160px 40px 120px',
+      minHeight: isMobile ? '80vh' : '100vh',
+      height: isMobile ? 'auto' : '100vh',
+      padding: isMobile ? '80px 20px 50px' : '140px 40px 100px',
       overflow: 'hidden',
       color: '#fff',
+      display: 'flex',
+      flexDirection: 'column' as const,
+      justifyContent: 'center',
     },
     bgStage: {
       position: 'absolute' as const,
@@ -115,11 +119,11 @@ export default function Hero() {
       alignItems: 'center',
       gap: '12px',
       fontFamily: 'monospace',
-      fontSize: '11px',
+      fontSize: isMobile ? '9px' : '11px',
       letterSpacing: '0.16em',
       textTransform: 'uppercase' as const,
       color: 'rgba(255,255,255,0.72)',
-      marginBottom: '64px',
+      marginBottom: isMobile ? '30px' : '64px',
     },
     dot: {
       width: '6px',
@@ -131,13 +135,14 @@ export default function Hero() {
     h1: {
       position: 'relative' as const,
       zIndex: 2,
-      fontSize: isMobile ? 'clamp(40px, 11vw, 72px)' : 'clamp(48px, 6.6vw, 104px)',
-      lineHeight: 1.04,
+      fontSize: isMobile ? 'clamp(32px, 9vw, 50px)' : 'clamp(44px, 5.5vw, 88px)',
+      lineHeight: 1.08,
       letterSpacing: '-0.035em',
       fontWeight: 600,
       margin: 0,
       color: '#fff',
-      maxWidth: isMobile ? '100%' : 'min(22ch, calc(100% - 240px))',
+      maxWidth: '100%',
+      width: '100%',
     },
     heroBottom: {
       position: 'relative' as const,
@@ -145,47 +150,57 @@ export default function Hero() {
       display: 'flex',
       flexDirection: isMobile ? ('column' as const) : ('row' as const),
       justifyContent: 'space-between',
-      alignItems: 'flex-end',
-      gap: isMobile ? '32px' : '40px',
-      marginTop: '64px',
+      alignItems: isMobile ? 'center' : 'flex-end',
+      gap: isMobile ? '16px' : '40px',
+      marginTop: isMobile ? '30px' : '64px',
     },
     heroSub: {
-      fontSize: isMobile ? '16px' : '17px',
-      lineHeight: isMobile ? '26px' : '26px',
+      fontSize: isMobile ? '14px' : '16px',
+      lineHeight: isMobile ? '22px' : '26px',
       color: 'rgba(255,255,255,0.86)',
-      maxWidth: isMobile ? '100%' : '44ch',
+      maxWidth: '100%',
+      width: '100%',
       margin: 0,
+      textAlign: (isMobile ? 'center' : 'left') as 'center' | 'left',
+      wordWrap: 'break-word' as const,
+      overflowWrap: 'break-word' as const,
     },
     heroCtas: {
       display: 'flex',
       gap: '10px',
       flexWrap: 'wrap' as const,
+      justifyContent: 'center',
+      width: '100%',
     },
     btnPrimary: {
       background: '#fff',
       color: '#171717',
-      padding: isMobile ? '10px 18px' : '8px 16px',
+      padding: isMobile ? '8px 16px' : '8px 18px',
       borderRadius: '9999px',
       fontWeight: 500,
-      fontSize: isMobile ? '13px' : '12px',
+      fontSize: isMobile ? '12px' : '12px',
       textDecoration: 'none',
       display: 'inline-flex',
       alignItems: 'center',
       gap: '6px',
-      transition: 'background 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      transition: 'background 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.2s ease',
       letterSpacing: '0.01em',
+      cursor: 'pointer',
+      whiteSpace: 'nowrap' as const,
     },
     btnOutline: {
       background: 'transparent',
       color: '#fff',
-      padding: isMobile ? '10px 18px' : '8px 16px',
+      padding: isMobile ? '8px 16px' : '8px 18px',
       borderRadius: '9999px',
       fontWeight: 500,
-      fontSize: isMobile ? '13px' : '12px',
+      fontSize: isMobile ? '12px' : '12px',
       border: '1px solid rgba(255,255,255,0.4)',
       textDecoration: 'none',
-      transition: 'background 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      transition: 'background 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.2s ease',
       letterSpacing: '0.01em',
+      cursor: 'pointer',
+      whiteSpace: 'nowrap' as const,
     },
     wordNav: {
       position: 'absolute' as const,
@@ -218,28 +233,6 @@ export default function Hero() {
       height: '1px',
       background: 'rgba(255,255,255,0.35)',
       transition: 'width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-    },
-    scrollHint: {
-      position: 'absolute' as const,
-      left: isMobile ? '24px' : '40px',
-      bottom: isMobile ? '24px' : '32px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      fontFamily: 'monospace',
-      fontSize: '10px',
-      letterSpacing: '0.16em',
-      textTransform: 'uppercase' as const,
-      color: 'rgba(255,255,255,0.65)',
-      pointerEvents: 'none' as const,
-      zIndex: 3,
-    },
-    scrollLine: {
-      width: '40px',
-      height: '1px',
-      background: 'rgba(255,255,255,0.3)',
-      position: 'relative' as const,
-      overflow: 'hidden',
     },
   };
 
@@ -321,7 +314,7 @@ export default function Hero() {
           </span>
         </h1>
 
-        {/* Word Navigation */}
+        {/* Word Navigation - Desktop only */}
         <div style={heroStyles.wordNav}>
           {words.map((word, idx) => (
             <button
@@ -362,35 +355,31 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll Hint */}
-      <div style={heroStyles.scrollHint}>
-        <span>Scroll</span>
-        <span style={heroStyles.scrollLine}>
-          <span style={{
-            position: 'absolute',
-            inset: 0,
-            background: '#fff',
-            animation: 'scrollLine 2.6s cubic-bezier(0.645, 0.045, 0.355, 1) infinite',
-          }} />
-        </span>
-      </div>
-
       <style>
         {`
           @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: .5; transform: scale(1.4); }
           }
-          @keyframes scrollLine {
-            0% { transform: translateX(-100%); }
-            50% { transform: translateX(0); }
-            100% { transform: translateX(100%); }
-          }
+          
           .hero-btn-primary:hover {
             background: #f5f5f5;
+            transform: scale(1.02);
           }
+          
           .hero-btn-outline:hover {
             background: rgba(255,255,255,0.08);
+            transform: scale(1.02);
+          }
+          
+          /* Mobile touch optimizations */
+          @media (max-width: 960px) {
+            .hero-btn-primary:active {
+              transform: scale(0.98);
+            }
+            .hero-btn-outline:active {
+              transform: scale(0.98);
+            }
           }
         `}
       </style>

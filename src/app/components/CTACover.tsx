@@ -25,7 +25,7 @@ export default function CTACover() {
   // Check mobile
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 960);
+      setIsMobile(window.innerWidth <= 768);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -49,108 +49,108 @@ export default function CTACover() {
     return () => observer.disconnect();
   }, []);
 
-  // Theme based gradient (always warm for CTA)
-  const gradientBg = 'linear-gradient(180deg, #270C0C 0%, #951818 100%)';
+  // Theme based gradient
+  const gradientBg = 'linear-gradient(135deg, #2C070C 0%, #74111F 45%, #DE213C 100%)';
   
   const styles = {
     section: { 
-      margin: isMobile ? '0 16px 40px' : '0 40px 40px', 
-      borderRadius: '24px', 
+      margin: isMobile ? '0 16px 32px' : '0 40px 40px', 
+      borderRadius: '20px', 
       background: gradientBg, 
       color: '#fff', 
       position: 'relative' as const, 
       overflow: 'hidden', 
-      minHeight: isMobile ? '500px' : '640px', 
+      minHeight: isMobile ? '380px' : '420px', 
       display: 'flex', 
       flexDirection: 'column' as const, 
       justifyContent: 'space-between', 
-      padding: isMobile ? '80px 32px 60px' : '100px 80px 80px' 
+      padding: isMobile ? '48px 24px 40px' : '60px 60px 50px' 
     },
     overlay: { 
       position: 'absolute' as const, 
       inset: 0, 
-      background: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 6px), radial-gradient(80% 60% at 100% 0%, rgba(255,255,255,0.16) 0%, transparent 60%)', 
+      background: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 6px), radial-gradient(80% 60% at 100% 0%, rgba(255,255,255,0.12) 0%, transparent 60%)', 
       mixBlendMode: 'overlay' as const, 
       pointerEvents: 'none' as const 
     },
     floral: { 
       position: 'absolute' as const, 
-      right: isMobile ? '-80px' : '-60px', 
-      bottom: isMobile ? '-80px' : '-60px', 
-      width: isMobile ? '240px' : '320px', 
-      height: isMobile ? '240px' : '320px', 
-      opacity: 0.15, 
+      right: isMobile ? '-60px' : '-40px', 
+      bottom: isMobile ? '-60px' : '-40px', 
+      width: isMobile ? '160px' : '200px', 
+      height: isMobile ? '160px' : '200px', 
+      opacity: 0.12, 
       pointerEvents: 'none' as const, 
-      fontSize: isMobile ? '150px' : '200px', 
+      fontSize: isMobile ? '100px' : '140px', 
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center' 
     },
     meta: { 
       fontFamily: 'monospace', 
-      fontSize: '10px', 
+      fontSize: '9px', 
       letterSpacing: '0.16em', 
       textTransform: 'uppercase' as const, 
       color: 'rgba(255,255,255,0.7)', 
       display: 'flex', 
       alignItems: 'center', 
-      gap: '12px', 
-      marginBottom: '24px' 
+      gap: '10px', 
+      marginBottom: '16px' 
     },
     metaLine: { 
-      width: '24px', 
+      width: '20px', 
       height: '1px', 
       background: 'rgba(255,255,255,0.5)' 
     },
     h2: { 
-      fontSize: isMobile ? 'clamp(40px, 8vw, 80px)' : 'clamp(56px, 7vw, 110px)', 
-      lineHeight: 0.95, 
+      fontSize: isMobile ? 'clamp(32px, 7vw, 56px)' : 'clamp(44px, 5vw, 80px)', 
+      lineHeight: 1.0, 
       letterSpacing: '-0.035em', 
       fontWeight: 700, 
       color: '#fff', 
-      margin: '0 0 24px', 
-      maxWidth: isMobile ? '100%' : '14ch' 
+      margin: '0 0 20px', 
+      maxWidth: isMobile ? '100%' : '12ch' 
     },
     h2Em: { 
       fontStyle: 'italic', 
       fontWeight: 400, 
-      color: 'rgba(255,255,255,0.8)' 
+      color: 'rgba(255,255,255,0.85)' 
     },
     bottom: { 
       display: 'flex', 
       flexDirection: isMobile ? ('column' as const) : ('row' as const), 
       justifyContent: 'space-between', 
       alignItems: isMobile ? 'flex-start' : 'flex-end', 
-      gap: isMobile ? '32px' : '48px', 
+      gap: isMobile ? '24px' : '32px', 
       flexWrap: 'wrap' as const 
     },
     sub: { 
-      fontSize: isMobile ? '14px' : '15px', 
-      lineHeight: isMobile ? '22px' : '24px', 
-      maxWidth: isMobile ? '100%' : '42ch', 
+      fontSize: isMobile ? '12px' : '13px', 
+      lineHeight: isMobile ? '18px' : '20px', 
+      maxWidth: isMobile ? '100%' : '38ch', 
       color: 'rgba(255,255,255,0.85)' 
     },
     btnPrimary: { 
       background: '#fff', 
       color: '#171717', 
-      padding: isMobile ? '10px 18px' : '10px 20px', 
+      padding: isMobile ? '8px 16px' : '9px 18px', 
       borderRadius: '9999px', 
       fontWeight: 500, 
-      fontSize: isMobile ? '13px' : '14px', 
+      fontSize: isMobile ? '12px' : '13px', 
       textDecoration: 'none', 
       display: 'inline-flex', 
       alignItems: 'center', 
-      gap: '8px',
+      gap: '6px',
       transition: 'all 0.3s ease',
       cursor: 'pointer',
     },
     btnOutline: { 
       background: 'transparent', 
       color: '#fff', 
-      padding: isMobile ? '10px 18px' : '10px 20px', 
+      padding: isMobile ? '8px 16px' : '9px 18px', 
       borderRadius: '9999px', 
       fontWeight: 500, 
-      fontSize: isMobile ? '13px' : '14px', 
+      fontSize: isMobile ? '12px' : '13px', 
       border: '1px solid rgba(255,255,255,0.4)', 
       textDecoration: 'none', 
       transition: 'all 0.3s ease',
@@ -158,7 +158,7 @@ export default function CTACover() {
     },
     btnGroup: { 
       display: 'flex', 
-      gap: '12px', 
+      gap: '10px', 
       flexWrap: 'wrap' as const 
     },
   };
@@ -180,7 +180,7 @@ export default function CTACover() {
 
       <div style={styles.bottom}>
         <p className="cta-up" style={styles.sub}>
-          Open a free account, read the first lesson of any course, and decide for yourself. No card on file, no countdown timer, no discount that expires at midnight.
+          Open a free account, read the first lesson of any course, and decide for yourself. No card on file, no countdown timer.
         </p>
         <div className="cta-up" style={styles.btnGroup}>
           <Link href="/dashboard" style={styles.btnPrimary}>
@@ -195,15 +195,15 @@ export default function CTACover() {
       <style>{`
         .cta-item, .cta-up {
           opacity: 0;
-          transform: translateY(24px);
-          transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transform: translateY(20px);
+          transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .cta-item.in, .cta-up.in {
           opacity: 1;
           transform: translateY(0);
         }
         .cta-up {
-          transform: translateY(48px);
+          transform: translateY(30px);
         }
         .btn-primary:hover {
           background: #f0f0f0;
@@ -212,6 +212,11 @@ export default function CTACover() {
         .btn-outline:hover {
           background: rgba(255,255,255,0.1);
           transform: scale(0.98);
+        }
+        @media (max-width: 768px) {
+          .btn-primary:hover, .btn-outline:hover {
+            transform: scale(0.98);
+          }
         }
       `}</style>
     </section>

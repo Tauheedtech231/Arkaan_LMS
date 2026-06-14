@@ -40,7 +40,6 @@ export default function WelcomePage() {
     borderColor: isDark ? '#2a2a2a' : '#e5e5e5',
     accentColor: isDark ? '#e63939' : '#dc2626',
     cardBg: isDark ? '#141414' : '#f5f5f5',
-    inputBg: isDark ? '#1a1a1a' : '#ffffff',
   };
 
   const styles = {
@@ -55,26 +54,27 @@ export default function WelcomePage() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: isMobile ? '40px 20px' : '60px 40px',
+      padding: isMobile ? '20px 16px' : '30px 32px', // ✅ Padding aur kam
     },
     card: {
-      maxWidth: '480px',
+      maxWidth: isMobile ? '340px' : '400px', // ✅ Width aur kam
       width: '100%',
       background: themeStyles.cardBg,
-      borderRadius: '24px',
-      padding: isMobile ? '40px 24px' : '48px 40px',
+      borderRadius: isMobile ? '20px' : '24px',
+      padding: isMobile ? '20px 16px' : '28px 32px', // ✅ Padding aur kam
       border: `1px solid ${themeStyles.borderColor}`,
     },
     logo: {
       textAlign: 'center' as const,
-      marginBottom: '48px',
+      marginBottom: isMobile ? '16px' : '24px', // ✅ Margin aur kam
     },
     logoText: {
       fontFamily: 'Georgia, serif',
-      fontSize: isMobile ? '36px' : '42px',
+      fontSize: isMobile ? '22px' : '32px', // ✅ Font aur chota
       fontWeight: 700,
       letterSpacing: '-0.03em',
       color: themeStyles.textPrimary,
+      lineHeight: 1.2,
     },
     logoEm: {
       fontStyle: 'italic',
@@ -83,36 +83,37 @@ export default function WelcomePage() {
     },
     welcomeText: {
       textAlign: 'center' as const,
-      marginBottom: '40px',
+      marginBottom: isMobile ? '16px' : '24px', // ✅ Margin aur kam
     },
     welcomeLine1: {
-      fontSize: isMobile ? '28px' : '36px',
+      fontSize: isMobile ? '18px' : '24px', // ✅ Font aur chota
       fontWeight: 600,
       letterSpacing: '-0.02em',
       color: themeStyles.textPrimary,
-      marginBottom: '8px',
+      marginBottom: isMobile ? '4px' : '6px',
     },
     welcomeLine2: {
-      fontSize: isMobile ? '14px' : '15px',
-      lineHeight: '24px',
+      fontSize: isMobile ? '11px' : '12px', // ✅ Font aur chota
+      lineHeight: isMobile ? '16px' : '20px', // ✅ Line height kam
       color: themeStyles.textSecondary,
-      maxWidth: '380px',
+      maxWidth: isMobile ? '100%' : '320px',
       margin: '0 auto',
+      padding: isMobile ? '0' : '0',
     },
     buttonGroup: {
       display: 'flex',
       flexDirection: 'column' as const,
-      gap: '12px',
-      marginBottom: '32px',
+      gap: isMobile ? '8px' : '10px',
+      marginBottom: isMobile ? '16px' : '20px', // ✅ Margin aur kam
     },
     btnPrimary: {
       width: '100%',
       background: themeStyles.accentColor,
       color: '#fff',
-      padding: '14px 20px',
+      padding: isMobile ? '8px 14px' : '10px 18px', // ✅ Padding aur kam
       borderRadius: '999px',
       fontWeight: 600,
-      fontSize: '15px',
+      fontSize: isMobile ? '12px' : '13px', // ✅ Font aur chota
       textAlign: 'center' as const,
       textDecoration: 'none',
       display: 'block',
@@ -124,10 +125,10 @@ export default function WelcomePage() {
       width: '100%',
       background: 'transparent',
       color: themeStyles.textPrimary,
-      padding: '14px 20px',
+      padding: isMobile ? '8px 14px' : '10px 18px', // ✅ Padding aur kam
       borderRadius: '999px',
       fontWeight: 600,
-      fontSize: '15px',
+      fontSize: isMobile ? '12px' : '13px', // ✅ Font aur chota
       textAlign: 'center' as const,
       textDecoration: 'none',
       display: 'block',
@@ -139,10 +140,10 @@ export default function WelcomePage() {
       width: '100%',
       background: 'transparent',
       color: themeStyles.textSecondary,
-      padding: '14px 20px',
+      padding: isMobile ? '6px 14px' : '8px 18px', // ✅ Padding aur kam
       borderRadius: '999px',
       fontWeight: 500,
-      fontSize: '14px',
+      fontSize: isMobile ? '11px' : '12px', // ✅ Font aur chota
       textAlign: 'center' as const,
       textDecoration: 'none',
       display: 'block',
@@ -151,17 +152,41 @@ export default function WelcomePage() {
     },
     termsText: {
       textAlign: 'center' as const,
-      fontSize: '12px',
+      fontSize: isMobile ? '9px' : '10px', // ✅ Font aur chota
       color: themeStyles.textSecondary,
       borderTop: `1px solid ${themeStyles.borderColor}`,
-      paddingTop: '24px',
-      marginTop: '8px',
+      paddingTop: isMobile ? '12px' : '16px', // ✅ Padding aur kam
+      marginTop: isMobile ? '0' : '0',
+      lineHeight: 1.3,
     },
     link: {
       color: themeStyles.accentColor,
       textDecoration: 'none',
     },
   };
+
+  // Hover effects style
+  const hoverStyles = `
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px ${isDark ? 'rgba(230,57,57,0.3)' : 'rgba(220,38,38,0.2)'};
+    }
+    .btn-outline:hover {
+      transform: translateY(-1px);
+      background: ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'};
+    }
+    .btn-guest:hover {
+      color: ${themeStyles.accentColor};
+    }
+    .btn-primary:active, .btn-outline:active, .btn-guest:active {
+      transform: translateY(0);
+    }
+    @media (max-width: 768px) {
+      .btn-primary:hover, .btn-outline:hover, .btn-guest:hover {
+        transform: translateY(0);
+      }
+    }
+  `;
 
   return (
     <div style={styles.container}>
@@ -189,13 +214,13 @@ export default function WelcomePage() {
 
           {/* Buttons */}
           <div style={styles.buttonGroup}>
-            <Link href="/browse" style={styles.btnGuest}>
+            <Link href="/browse" style={styles.btnGuest} className="btn-guest">
               Browse as a guest
             </Link>
-            <Link href="/login" style={styles.btnOutline}>
+            <Link href="/login" style={styles.btnOutline} className="btn-outline">
               I have an account
             </Link>
-            <Link href="/signup" style={styles.btnPrimary}>
+            <Link href="/signup" style={styles.btnPrimary} className="btn-primary">
               Create an account
             </Link>
           </div>
@@ -214,6 +239,7 @@ export default function WelcomePage() {
           </div>
         </div>
       </main>
+      <style>{hoverStyles}</style>
     </div>
   );
 }

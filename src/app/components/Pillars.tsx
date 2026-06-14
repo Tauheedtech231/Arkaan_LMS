@@ -48,7 +48,7 @@ export default function Pillars() {
   // Check mobile
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 960);
+      setIsMobile(window.innerWidth <= 768);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -77,8 +77,8 @@ export default function Pillars() {
 
   // Theme based colors
   const themeStyles = {
-    sectionBg: isDark ? '#141414' : '#f5f5f5',
-    cardBg: isDark ? '#0a0a0a' : '#ffffff',
+    sectionBg: isDark ? '#0a0a0a' : '#f5f5f5',
+    cardBg: isDark ? '#141414' : '#ffffff',
     textPrimary: isDark ? '#ffffff' : '#171717',
     textSecondary: isDark ? '#999' : '#666',
     borderColor: isDark ? '#1f1f1f' : '#e5e5e5',
@@ -88,12 +88,12 @@ export default function Pillars() {
   const styles = {
     section: { 
       background: themeStyles.sectionBg, 
-      padding: isMobile ? '120px 24px' : '160px 40px', 
+      padding: isMobile ? '60px 24px' : '80px 40px', 
       borderRadius: '24px', 
-      margin: isMobile ? '0 16px 80px' : '0 40px 160px' 
+      margin: isMobile ? '0 16px 40px' : '0 40px 80px' 
     },
     inner: { 
-      maxWidth: '1360px', 
+      maxWidth: '1200px', 
       margin: '0 auto' 
     },
     eyebrow: { 
@@ -105,7 +105,7 @@ export default function Pillars() {
       display: 'flex', 
       alignItems: 'center', 
       gap: '10px', 
-      marginBottom: '24px' 
+      marginBottom: '16px' 
     },
     eyebrowLine: { 
       width: '24px', 
@@ -117,7 +117,7 @@ export default function Pillars() {
       lineHeight: 1.05, 
       letterSpacing: '-0.025em', 
       fontWeight: 600, 
-      margin: '0 0 20px', 
+      margin: '0 0 12px', 
       color: themeStyles.textPrimary 
     },
     titleEm: { 
@@ -125,26 +125,26 @@ export default function Pillars() {
       fontWeight: 400 
     },
     lede: { 
-      fontSize: isMobile ? '14px' : '15px', 
-      lineHeight: isMobile ? '24px' : '26px', 
+      fontSize: isMobile ? '13px' : '14px', 
+      lineHeight: isMobile ? '20px' : '22px', 
       maxWidth: '48ch', 
       color: themeStyles.textSecondary, 
-      marginBottom: '64px' 
+      marginBottom: '40px' 
     },
     grid: { 
       display: 'grid', 
       gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', 
-      gap: isMobile ? '48px' : '64px' 
+      gap: isMobile ? '32px' : '40px' 
     },
     imageWrapper: {
       width: '100%',
-      height: '200px',
-      marginBottom: '28px',
+      height: isMobile ? '180px' : '200px',
+      marginBottom: '20px',
       borderRadius: '16px',
       overflow: 'hidden',
       boxShadow: isDark 
-        ? '0 8px 20px rgba(0,0,0,0.3)' 
-        : '0 8px 20px rgba(0,0,0,0.08)',
+        ? '0 4px 12px rgba(0,0,0,0.3)' 
+        : '0 4px 12px rgba(0,0,0,0.08)',
       transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
     },
     image: {
@@ -155,30 +155,30 @@ export default function Pillars() {
     },
     num: { 
       fontFamily: 'monospace', 
-      fontSize: '10px', 
+      fontSize: '9px', 
       letterSpacing: '0.16em', 
       textTransform: 'uppercase' as const, 
       color: themeStyles.textSecondary, 
-      marginBottom: '16px', 
+      marginBottom: '10px', 
       display: 'flex', 
       alignItems: 'center', 
-      gap: '12px' 
+      gap: '10px' 
     },
     numLine: { 
-      width: '20px', 
+      width: '16px', 
       height: '1px', 
       background: themeStyles.borderColorLight 
     },
     h3: { 
-      fontSize: isMobile ? '24px' : '28px', 
-      lineHeight: isMobile ? '32px' : '36px', 
+      fontSize: isMobile ? '20px' : '22px', 
+      lineHeight: isMobile ? '28px' : '30px', 
       letterSpacing: '-0.015em', 
-      margin: '0 0 14px', 
+      margin: '0 0 10px', 
       color: themeStyles.textPrimary 
     },
     p: { 
-      fontSize: isMobile ? '14px' : '15px', 
-      lineHeight: isMobile ? '24px' : '26px', 
+      fontSize: isMobile ? '13px' : '14px', 
+      lineHeight: isMobile ? '20px' : '22px', 
       color: themeStyles.textSecondary, 
       maxWidth: '36ch', 
       margin: 0 
@@ -188,7 +188,7 @@ export default function Pillars() {
   return (
     <section style={styles.section}>
       <div style={styles.inner}>
-        <div className="pillar-reveal" style={{ maxWidth: '64ch', marginBottom: isMobile ? '64px' : '96px' }}>
+        <div className="pillar-reveal" style={{ maxWidth: '64ch', marginBottom: isMobile ? '40px' : '48px' }}>
           <div style={styles.eyebrow}>
             <span style={styles.eyebrowLine} />
             Why Arkaan
@@ -204,7 +204,6 @@ export default function Pillars() {
         <div style={styles.grid}>
           {pillars.map((pillar, idx) => (
             <div key={idx} className="pillar-stagger" style={{ position: 'relative' }}>
-              {/* High Quality Image */}
               <div style={styles.imageWrapper} className="pillar-image-wrapper">
                 <img 
                   src={pillar.image} 
@@ -228,25 +227,25 @@ export default function Pillars() {
       <style>{`
         .pillar-reveal, .pillar-up, .pillar-stagger {
           opacity: 0;
-          transform: translateY(24px);
-          transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transform: translateY(20px);
+          transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .pillar-reveal.in, .pillar-up.in, .pillar-stagger.in {
           opacity: 1;
           transform: translateY(0);
         }
         .pillar-up {
-          transform: translateY(48px);
+          transform: translateY(30px);
         }
         .pillar-stagger.in:nth-child(1) { transition-delay: 0.05s; }
-        .pillar-stagger.in:nth-child(2) { transition-delay: 0.15s; }
-        .pillar-stagger.in:nth-child(3) { transition-delay: 0.25s; }
+        .pillar-stagger.in:nth-child(2) { transition-delay: 0.1s; }
+        .pillar-stagger.in:nth-child(3) { transition-delay: 0.15s; }
         
         .pillar-stagger:hover .pillar-image {
-          transform: scale(1.05);
+          transform: scale(1.03);
         }
         .pillar-stagger:hover .pillar-image-wrapper {
-          transform: translateY(-4px);
+          transform: translateY(-2px);
         }
       `}</style>
     </section>
